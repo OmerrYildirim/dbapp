@@ -1,0 +1,109 @@
+﻿@model dbapp.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-black">
+  <form asp-controller="Home" asp-action="Register" method="post" class="form bg-dark-gray p-4 rounded">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+      <label asp-for="UserType" class="control-label text-white">Choose User Type</label>
+      <select asp-for="UserType" class="form-control">
+        <option value="">-- Select --</option>
+        <option value="Customer">Customer</option>
+        <option value="Employee">Employee</option>
+      </select>
+      <span asp-validation-for="UserType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+      <label asp-for="Name" class="control-label text-white">Name</label>
+      <input asp-for="Name" class="form-control" />
+      <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+      <label asp-for="Surname" class="control-label text-white">Surname</label>
+      <input asp-for="Surname" class="form-control" />
+      <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+      <label asp-for="UserEmail" class="control-label text-white">Email</label>
+      <input asp-for="UserEmail" class="form-control" />
+      <span asp-validation-for="UserEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+      <label asp-for="Password" class="control-label text-white ">Password</label>
+      <input asp-for="Password" class="form-control" type="password" />
+      <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group text-center">
+      <input type="submit" value="Register" class="btn btn-dark-yellow" />
+    </div>
+
+    <div class="form-group text-center mt-3">
+      <a asp-controller="Home" asp-action="Login" class="text-warning">Do you have an account. Please log in!</a>
+    </div>
+  </form>
+</div>
+
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .justify-content-center {
+    justify-content: center;
+  }
+
+  .align-items-center {
+    align-items: center;
+  }
+
+  .vh-100 {
+    height: 100vh;
+  }
+
+  .bg-dark-gray {
+    background-color: #333;
+    color: white;
+  }
+
+  .rounded {
+    border-radius: 8px;
+  }
+
+  .btn-dark-yellow {
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+  }
+
+  .btn-dark-yellow:hover {
+    background-color: #e6b800;
+    color: black;
+  }
+
+  .p-4 {
+    padding: 1.5rem;
+  }
+
+  .text-white {
+    color: white;
+  }
+
+</style>
+

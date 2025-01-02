@@ -1,0 +1,36 @@
+[*.cs]
+# Newline rules
+csharp_new_line_before_open_brace = none
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+csharp_new_line_before_members_in_object_initializers = false
+csharp_new_line_before_members_in_anonymous_types = false
+
+# Indentation rules
+indent_style = space
+indent_size = 4
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+
+# Spacing rules
+csharp_space_before_open_square_brackets = false
+csharp_space_after_cast = false
+csharp_space_before_comma = false
+csharp_space_after_comma = true
+csharp_space_before_dot = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+
+# Wrapping and line length
+max_line_length = 140
+csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true
+
+# Expression formatting
+csharp_space_around_binary_operators = before_and_after
+
+# Using directive placement
+csharp_using_directive_placement = outside_namespace
