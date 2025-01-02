@@ -5,7 +5,6 @@ using dbapp.Models;
 namespace dbapp.Controllers;
 
 public class HomeController : Controller {
-    
 
     [HttpGet]
     public IActionResult Login() {
