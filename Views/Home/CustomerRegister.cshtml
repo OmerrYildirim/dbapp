@@ -1,56 +1,54 @@
-﻿@model dbapp.Models.LoginViewModel
+﻿@model dbapp.Models.CustomerRegisterViewModel
 @{
-  ViewData["Title"] = "Login";
+  ViewData["Title"] = "CustomerRegister";
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100 bg-black">
-  <form asp-controller="Home" asp-action="Login" method="post" class="form bg-dark-gray p-4 rounded">
-    
+  <form asp-controller="Home" asp-action="CustomerRegister" method="post" class="form bg-dark-gray p-4 rounded">
+
 
     <div class="form-group">
-      <label asp-for="UserType" class="control-label text-white">Choose User Type</label>
-      <select asp-for="UserType" class="form-control">
-        <option value="">-- Select --</option>
-        <option value="Customer">Customer</option>
-        <option value="Employee">Employee</option>
-      </select>
-      <span asp-validation-for="UserType" class="text-danger"></span>
+      <label asp-for="FullName" class="control-label text-white">Name</label>
+      <input asp-for="FullName" class="form-control"/>
+      <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
       <label asp-for="UserEmail" class="control-label text-white">Email</label>
-      <input asp-for="UserEmail" class="form-control" />
+      <input asp-for="UserEmail" class="form-control"/>
       <span asp-validation-for="UserEmail" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-4">
       <label asp-for="Password" class="control-label text-white">Password</label>
-      <input asp-for="Password" class="form-control" type="password" />
+      <input asp-for="Password" class="form-control" type="password"/>
       <span asp-validation-for="Password" class="text-danger"></span>
     </div>
+   
+
+    <div class="form-group mb-4" id="companyNameField">
+      <label asp-for="CompanyName" class="control-label text-white">Company Name</label>
+      <input asp-for="CompanyName" class="form-control"/>
+      <span asp-validation-for="CompanyName" class="text-danger"></span>
+
+    </div>
+
 
     <div class="form-group text-center">
-      <input type="submit" value="Login" class="btn btn-dark-yellow" />
+      <input type="submit" value="Register" class="btn btn-dark-yellow"/>
     </div>
 
     <div class="form-group text-center mt-3">
       <a asp-controller="Home" asp-action="ChoosePersonType" class="text-warning">Go Back!</a>
     </div>
-    
-    @{
-      if (TempData["SuccessMessage"] != null) {
-        <div class="alert alert-success alert-dismissible fade show w-75 mx-auto" role="alert">
-          @TempData["SuccessMessage"]
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-      }
-    }
-    <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show mt-3"
-         role="alert">
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
   </form>
 </div>
+
+
 
 <style>
 

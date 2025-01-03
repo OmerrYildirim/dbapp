@@ -1,0 +1,88 @@
+﻿@model dbapp.Models.CustomerProductNames
+
+@{
+    ViewData["Title"] = "CustomerDashboard";
+}
+<div class="d-flex vh-100">
+    <!-- Navigator Drawer -->
+    <div class="bg-dark-gray p-4" style="width: 250px;">
+        <h2 class="text-white mb-4">Products</h2>
+        <ul class="list-unstyled">
+            @foreach (var product in Model.ProductNames)
+            {
+                <li class="mb-3">
+                    <a href="#" class="text-white text-decoration-none btn btn-dark-yellow w-100">
+                        @product
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <!-- Additional Navigation Links -->
+        <hr class="text-white my-4">
+        <h5 class="text-white mb-3">Navigator</h5>
+        <ul class="list-unstyled">
+            <li class="mb-3">
+                <a href="#" class="text-white text-decoration-none btn btn-dark-yellow w-100">Home</a>
+            </li>
+            <li class="mb-3">
+                <a href="#" class="text-white text-decoration-none btn btn-dark-yellow w-100">Dashboard</a>
+            </li>
+            <li class="mb-3">
+                <a href="#" class="text-white text-decoration-none btn btn-dark-yellow w-100">Profile</a>
+            </li>
+            <li class="mb-3">
+                <a href="#" class="text-white text-decoration-none btn btn-dark-yellow w-100">Settings</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 bg-black d-flex justify-content-center align-items-center">
+        <h2 class="text-white">Select a Product</h2>
+    </div>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        background-color: black;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .d-flex {
+        display: flex;
+    }
+    .vh-100 {
+        height: 100vh;
+    }
+    .bg-dark-gray {
+        background-color: #333;
+        color: white;
+    }
+    .btn-dark-yellow {
+        background-color: #ffcc00;
+        color: black;
+        border: none;
+    }
+    .btn-dark-yellow:hover {
+        background-color: #e6b800;
+        color: black;
+    }
+    .p-4 {
+        padding: 1.5rem;
+    }
+    .text-white {
+        color: white;
+    }
+    .flex-grow-1 {
+        flex-grow: 1;
+    }
+    .text-decoration-none {
+        text-decoration: none;
+    }
+    hr {
+        border-color: white;
+    }
+</style>
