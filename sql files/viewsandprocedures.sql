@@ -34,7 +34,7 @@ CREATE PROCEDURE pro_CreateEmployee
 	@HireDatePar Date,
 	@EmailPar varchar(100),
 	@PasswordPar VARCHAR(16),
-	@ManagerID int
+	@ManagerMail varchar(100)
 AS
 BEGIN
 	insert into PERSON(FullName,HireDate,Email,PASSWORD_, PERSONTYPE) values
@@ -45,7 +45,10 @@ BEGIN
 		(	select p.PersonID
 			from PERSON p
 			where p.Email = @EmailPar),
-		@ManagerID
+		(	select m.PersonID
+			from PERSON m
+			where m.Email = @ManagerMail
+		)
 	)
 END
 
