@@ -31,7 +31,7 @@ EXECUTE dbo.pro_CreateCustomer 'Ravza Alkan', '2024-08-03', 'ravzaalkan@gmail.co
 EXECUTE dbo.pro_CreateCustomer 'Mehmet Coşkun', '2024-09-11', 'mehmetcoskun@gmail.com', '1234', 'Toroslar'
 EXECUTE dbo.pro_CreateCustomer 'Sena Çifçi', '2024-10-21', 'senacifci@gmail.com', '1234', 'Toyota'
 EXECUTE dbo.pro_CreateCustomer 'Süleyman Acemoğlu', '2024-11-13', 'suleymanacemoglu@gmail.com', '1234', 'Turkish Airlines'
-EXECUTE dbo.pro_CreateCustomer 'Hülya Avşar', '2024-12-02', 'hulyavsar@gmail.com', '1234', 'Turkiye Cumhuriyeti Cumhurbaskanligi'
+EXECUTE dbo.pro_CreateCustomer 'Hülya Avşar', '2024-12-02', 'hulyavsar@gmail.com', '1234', 'Turkiye Cumhuriyeti Cumhurbaşkanlığı'
 
 
 EXECUTE dbo.pro_CreateCustomer 'Enes Koç', '2025-01-15', 'eneskoc@gmail.com', '1234', 'Abdi Ibrahim'
