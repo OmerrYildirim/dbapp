@@ -1,0 +1,32 @@
+use AKADEMEDYA
+
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'Uygulama IRONIC, iþlem sýrasýnda beklenmedik þekilde kapanýyor. Bu durum özellikle rapor oluþtururken gözlemlendi. Test edilen cihaz modeli Z, iþletim sistemi sürümü Y. Hata uygulamanýn 3.00 sürümünde raporlandý. Acil çözüm bekliyorum.','12-01-2024','IRONIC','Enerjisa','3.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB uygulamasýnda kullanýcý giriþ iþlemi tamamlandýktan sonra ekran donuyor. Hata, 4.44 sürümünde tekrarlandý. Test edilen cihaz: Android X.','11-15-2024','IRONIC-OSGB','Roketsan','4.44';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS uygulamasýnda veri kaydý sýrasýnda "Baðlantý kesildi" hatasý alýnýyor. Problem 7.00 sürümünde gözlemlendi. Wi-Fi ve mobil veri ayný þekilde baþarýsýz.','09-30-2023','AYS','Toyota','7.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, raporlar sekmesine giriþ yaparken donuyor ve iþlem tamamlanmýyor. Sorun uygulamanýn 4.20 sürümünde raporlandý.','08-20-2024','MOBILISG','Turkish Airlines','4.20';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO uygulamasýnda þifre yenileme ekraný doðru þekilde çalýþmýyor. Hata 3.88 sürümünde test edilmiþtir.','10-05-2024','ISGPRO','Aselsan','3.88';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS uygulamasý yükleme ekranýnda takýlýyor. Sorun 9.00 sürümünde test edildi. Çözüm için destek talep ediyorum.','11-12-2023','AYS','Bayer','9.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC raporlama sekmesinde veriler doðru yüklenmiyor. Sorun 2.80 sürümünde raporlandý.','09-01-2024','IRONIC','Abdi Ibrahim','2.80';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB, rapor oluþturma sýrasýnda cihazý aþýrý ýsýtýyor. 5.25 sürümünde test edildi ve hata raporlandý.','12-24-2023','IRONIC-OSGB','Sabanci','5.25';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO uygulamasý bildirim göndermiyor. Sorun, test edilen cihazda 5.00 sürümünde gözlemlendi.','07-15-2024','ISGPRO','Copa','5.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, kullanýcý profil güncellemesi sýrasýnda hata veriyor. Test edilen sürüm: 3.70.','03-11-2024','MOBILISG','Eczacibasi','3.70';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS, giriþ sýrasýnda doðrulama hatasý veriyor. Test edilen sürüm: 2.00. Hata sürekli tekrarlanýyor.','09-05-2023','AYS','Enerjisa Uretim','2.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB, ana ekrandan çýkýþ yapmaya çalýþýrken uygulama kapanýyor. Sorun 3.32 sürümünde raporlandý.','02-20-2024','IRONIC-OSGB','TEB','3.32';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO, performans raporlarýný yanlýþ hesaplýyor. Test edilen sürüm: 6.00. Sorun detaylý analiz gerektiriyor.','05-05-2024','ISGPRO','Pegasus Airlines','6.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, að baðlantýsý düþükken rapor oluþturamýyor. Hata 4.85 sürümünde tespit edildi.','01-11-2024','MOBILISG','Siemens','4.85';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS, sistem ayarlarýný kaydetmiyor. 8.00 sürümünde test edilmiþtir. Çözüm bekleniyor.','07-17-2024','AYS','Ford Otosan','8.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC, bildirimleri çift gönderiyor. Test edilen sürüm: 1.20. Problem çoklu cihazda görüldü.','06-22-2023','IRONIC','Cimentas','1.20';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB, zamanlama modülü düzgün çalýþmýyor. Test edilen sürüm: 4.00. Ayrýntýlý inceleme gerekiyor.','08-25-2024','IRONIC-OSGB','Mercedes-Benz','4.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO, giriþ ekranýnda doðrulama yapmadan ilerliyor. Test edilen sürüm: 4.55. Problem acil çözüm bekliyor.','10-31-2024','ISGPRO','Toroslar','4.55';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, ödeme ekranýnda iþlem tamamlanmýyor. Test edilen sürüm: 6.00. Hata 3 cihazda test edildi.','11-01-2024','MOBILISG','Lidya Madencilik','6.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS uygulamasý, kayýtlý verileri kaybediyor. Test edilen sürüm: 10.00. Sorun birden fazla kullanýcýda raporlandý.','08-28-2024','AYS','SunExpress','10.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC, rapor gönderiminde takýlýyor. Sorun 1.00 sürümünde raporlanmýþtýr. Çözüm talep ediliyor.','04-16-2024','IRONIC','BASF','1.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB, sesli komutlarý algýlamýyor. Test edilen sürüm: 2.00. Detaylý inceleme yapýlmasý gerekiyor.','02-14-2024','IRONIC-OSGB','Bilim Ilac','2.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO, kullanýcý hesaplarýný senkronize etmiyor. Sorun 2.34 sürümünde test edilmiþtir.','12-08-2023','ISGPRO','Ayedas','2.34';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, tarih seçim modülünde hata veriyor. Sorun 7.00 sürümünde test edilmiþtir.','10-19-2023','MOBILISG','Turkiye Cumhuriyeti Cumhurbaþkanlýðý','7.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS, raporlama ekranýnda veri yüklenmiyor. Test edilen sürüm: 4.00. Kullanýcýlar problem yaþýyor.','03-23-2024','AYS','Imbat','4.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC, yedekleme iþlemi sýrasýnda hata veriyor. Test edilen sürüm: 4.00. Acil çözüm bekliyorum.','07-30-2024','IRONIC','Birgi Mefar','4.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'IRONIC-OSGB, çevrimdýþý modda çalýþmýyor. Test edilen sürüm: 5.80. Detaylý inceleme gerektiriyor.','01-01-2025','IRONIC-OSGB','Besiktas Shipyard','5.80';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'ISGPRO, kullanýcý verilerini eksik yüklüyor. Test edilen sürüm: 6.10. Problem sürekli tekrarlanýyor.','12-25-2024','ISGPRO','Sabanci','6.10';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'MOBILISG, raporlarý yanlýþ sýralýyor. Test edilen sürüm: 5.00. Hata detaylý analiz bekliyor.','06-29-2024','MOBILISG','Enerjisa','5.00';
+EXECUTE dbo.pro_CREATE_BUG_REPORT 'AYS, giriþ ekranýnda doðrulama yapmadan geçiþ saðlýyor. Test edilen sürüm: 3.00. Sorun acil çözüm gerektiriyor.','03-01-2024','AYS','Toyota','3.00';
