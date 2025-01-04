@@ -1,0 +1,6 @@
+-> pro_VIEW_ALL_PROJECT_FOR_EMPLOYEE.sql
+-> pro_VIEW_CALCULATE_TOTAL_LICENCE_COST.sql
+-> pro_VIEW_Get_Product_Versions.sql
+-> view all products last versions.sql
+-> view customer information.sql
+-> Request and bug report for manager.sql
