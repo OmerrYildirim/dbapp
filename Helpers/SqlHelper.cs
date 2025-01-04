@@ -56,15 +56,5 @@ namespace dbapp.Helpers;
             return command.ExecuteReader();
         }
 
-        public SqlTransaction BeginTransaction() {
-            return _connection.BeginTransaction();
-        }
 
-        public static void CommitTransaction(SqlTransaction transaction) {
-            transaction.Commit();
-        }
-
-        public static void RollbackTransaction(SqlTransaction transaction) {
-            transaction.Rollback();
-        }
     }

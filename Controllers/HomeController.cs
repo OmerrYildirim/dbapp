@@ -13,7 +13,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
         return View();
     }
 
-    // Login - GET
+    
     [HttpGet]
     public IActionResult Login() {
         var token = Request.Cookies["JWT"];
@@ -30,7 +30,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
         };
     }
 
-    // Login - POST
+    
     [HttpPost]
     public IActionResult Login(LoginViewModel model) {
         if (!ModelState.IsValid) return View(model);
@@ -44,7 +44,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
                 
 
                 using (var command = new SqlCommand(query, connection)) {
-                    // Add parameters
+                    
                     SqlHelper.AddParameter(command, "@Email", SqlDbType.VarChar, model.UserEmail);
                     SqlHelper.AddParameter(command, "@Password", SqlDbType.VarChar, model.Password);
                     SqlHelper.AddParameter(command, "@PersonType", SqlDbType.VarChar, model.UserType);
@@ -67,7 +67,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
                         Expires = DateTime.UtcNow.AddMinutes(120)
                     });
                     
-                    // Redirect to a secured page (e.g., Dashboard) upon successful login
+                    
                     return model.UserType switch {
                         "Employee" => RedirectToAction("EmployeeDashboard", "Employee"),
                         "Manager" => RedirectToAction("ManagerDashboard", "Manager"),
@@ -82,13 +82,13 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
         }
     }
 
-    // Register - GET
+    
     [HttpGet]
     public IActionResult CustomerRegister() {
         return View();
     }
 
-    // Register - POST
+    
     [HttpPost]
     public IActionResult CustomerRegister(CustomerRegisterViewModel model) {
         if (!ModelState.IsValid) {
@@ -128,7 +128,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
         }
     }
 
-    // Register - GET
+    
     [HttpGet]
     public IActionResult EmployeeRegister() {
         return View();

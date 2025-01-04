@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dbapp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7cdb12010ce79818849cf593a004375305cba851")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9aa0ce4ebb315b08d15e5e6c6e13986a48223bd0")]
 [assembly: System.Reflection.AssemblyProductAttribute("dbapp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dbapp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

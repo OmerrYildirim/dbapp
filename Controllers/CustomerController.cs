@@ -17,7 +17,7 @@ namespace dbapp.Controllers {
         }
 
 
-        // View Licenses
+        
         [HttpGet]
         public IActionResult GetLicense() {
             var token = Request.Cookies["JWT"];
@@ -58,7 +58,7 @@ namespace dbapp.Controllers {
         }
 
 
-        // Buy License View
+        
         [HttpGet]
         public IActionResult BuyLicense()
         {
@@ -85,7 +85,7 @@ namespace dbapp.Controllers {
             return View();
         }
 
-        // Submit Buy License Request
+        
         [HttpPost]
         public IActionResult BuyLicense(BuyLicenseModel model)
         {
@@ -101,7 +101,7 @@ namespace dbapp.Controllers {
 
             string companyName = null;
 
-            // Kullanıcının şirket adını al
+            
             using (var command = sqlHelper.CreateCommand(
                        "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
                        "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
@@ -110,7 +110,7 @@ namespace dbapp.Controllers {
 
                 sqlHelper.OpenConnection();
                 var result = SqlHelper.ExecuteScalar(command);
-                companyName = result?.ToString(); // CompanyName'i string olarak al
+                companyName = result?.ToString(); 
                 sqlHelper.CloseConnection();
 
                 if (string.IsNullOrEmpty(companyName))
@@ -120,7 +120,7 @@ namespace dbapp.Controllers {
                 }
             }
 
-            // Lisans satın alma prosedürünü çalıştır
+            
             using (var command = sqlHelper.CreateCommand(
                        "EXEC pro_CREATE_LICENCE_UI @LicenceTermPar, @ProductNamePar, @CompanyNamePar"))
             {
@@ -141,7 +141,7 @@ namespace dbapp.Controllers {
 
 
 
-        // Bug Report View
+        
         [HttpGet]
         public IActionResult BugReport() {
             var products = new List<SelectListItem>();
@@ -167,7 +167,7 @@ namespace dbapp.Controllers {
             return View();
         }
 
-        // Feature Request View
+        
         [HttpGet]
         public ActionResult FeatureRequest() {
             var products = new List<SelectListItem>();
@@ -193,7 +193,7 @@ namespace dbapp.Controllers {
             return View();
         }
 
-        // Submit Bug Report
+        
         [HttpPost]
         public IActionResult SubmitBugReport(BugReportModel model) {
             if (!ModelState.IsValid) return View("BugReport");
@@ -210,7 +210,7 @@ namespace dbapp.Controllers {
 
             string companyName = null;
 
-            // Kullanıcının şirket adını al
+            
             using (var command = sqlHelper.CreateCommand(
                        "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
                        "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
@@ -219,7 +219,7 @@ namespace dbapp.Controllers {
 
                 sqlHelper.OpenConnection();
                 var result = SqlHelper.ExecuteScalar(command);
-                companyName = result?.ToString(); // CompanyName'i string olarak al
+                companyName = result?.ToString(); 
                 sqlHelper.CloseConnection();
 
                 if (string.IsNullOrEmpty(companyName))
@@ -246,7 +246,7 @@ namespace dbapp.Controllers {
             return RedirectToAction("CustomerDashboard", "Customer");
         }
 
-        // Submit Feature Request
+        
         [HttpPost]
         public IActionResult SubmitFeatureRequest(FeatureRequestModel model) {
             if (!ModelState.IsValid) return View("FeatureRequest");
@@ -262,7 +262,7 @@ namespace dbapp.Controllers {
 
             string companyName = null;
 
-            // Kullanıcının şirket adını al
+            
             using (var command = sqlHelper.CreateCommand(
                        "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
                        "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
@@ -271,7 +271,7 @@ namespace dbapp.Controllers {
 
                 sqlHelper.OpenConnection();
                 var result = SqlHelper.ExecuteScalar(command);
-                companyName = result?.ToString(); // CompanyName'i string olarak al
+                companyName = result?.ToString(); 
                 sqlHelper.CloseConnection();
 
                 if (string.IsNullOrEmpty(companyName))
@@ -297,7 +297,7 @@ namespace dbapp.Controllers {
             ViewBag.Message = "Feature request submitted successfully.";
             return RedirectToAction("CustomerDashboard", "Customer");
         }
-
+        
         [HttpGet]
         public IActionResult CustomerInformation() {
             var token = Request.Cookies["JWT"];
