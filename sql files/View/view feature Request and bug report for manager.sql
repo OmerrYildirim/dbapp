@@ -42,7 +42,34 @@ BEGIN
 END
 GO
 
+
+
+go
+create procedure pro_VIEW_AVG_RATING_MANAGER
+	@managerMail varchar(100)
+AS
+BEGIN
+	SELECT pro.PName, avg(fr.Rating)
+	FROM FEEDBACK fb inner join FEATUREREQUEST fr on fb.FeedbackID = fr.FeedbackID
+		inner join Company cmp on cmp.CompanyID = fb.CompanyID
+		inner join PRODUCT_ pro on pro.ProductID = fb.ProductID
+	where fb.ProductID in (
+		select p.ProductID
+		from EMPLOYEE emp inner join PERSON per on emp.EmployeeID = per.PersonID
+			inner join EMPLOYEE_PRODUCT ep on ep.EmployeeID = emp.EmployeeID
+			inner join PRODUCT_ p on p.ProductID = ep.ProductID
+		where per.Email = @managerMail
+	)
+	group by pro.PName
+	order by pro.PName
+END
+GO
+
+
+
+
 -- usage 
 
 -- exec pro_VIEW_BUG_REPORTS_MANAGER 'kadirdemir@hotmail.com'
 -- exec pro_VIEW_FEATURE_REQUESTS_MANAGER 'selimaksoy@gmail.com'
+-- exec pro_VIEW_FEATURE_REQUESTS_MANAGER 'leylacelik@gmail.com'
