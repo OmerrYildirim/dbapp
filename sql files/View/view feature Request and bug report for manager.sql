@@ -14,9 +14,9 @@ BEGIN
 		from EMPLOYEE emp inner join PERSON per on emp.EmployeeID = per.PersonID
 			inner join EMPLOYEE_PRODUCT ep on ep.EmployeeID = emp.EmployeeID
 			inner join PRODUCT_ p on p.ProductID = ep.ProductID
-		where per.Email = @managerMail
+		where per.Email = @managerMail)
 	
-	order by pro.PName)
+	order by pro.PName
 END
 GO
 
