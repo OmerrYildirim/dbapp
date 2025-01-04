@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 p-3 bg-dark text-white sidebar" style="height: 100vh; position: fixed;">
+            <h2 class="mb-4">Products</h2>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="IRONIC"
+                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
+                        IRONIC
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="ISGPRO"
+                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
+                        ISGPRO
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="IRONIC-OSGB"
+                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
+                        IRONIC-OSGB
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="MOBILISG"
+                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
+                        MOBILISG
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="AYS"
+                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
+                        AYS
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-9 offset-md-3 col-lg-10 offset-lg-2 p-4" style="margin-left: 250px;">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+<style>
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color: black; /* Arka plan rengini siyah yap */
+    }
+
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        overflow-y: auto;
+        background-color: #343a40;
+        padding-top: 20px;
+    }
+
+    hr {
+        border-color: white;
+    }
+</style>
