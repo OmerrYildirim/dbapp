@@ -1,0 +1,31 @@
+﻿@model List<dbapp.Models.GetFeatureRequestViewModel>
+
+@{
+    ViewBag.Title = "Feature Requests";
+}
+
+<h2>Feature Requests</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Rating</th>
+        <th>Message</th>
+        <th>Company Name</th>
+        <th>Feedback Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var request in Model)
+    {
+    <tr>
+        <td>@request.ProductName</td>
+        <td>@request.Rating</td>
+        <td>@request.Message</td>
+        <td>@request.CompanyName</td>
+        <td>@request.FeedbackDate.ToString("yyyy-MM-dd")</td>
+    </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,32 @@
+﻿@model List<dbapp.Models.GetBugReportViewModel>
+
+@{
+    ViewBag.Title = "Bug Reports";
+    
+}
+
+<h2>Bug Reports</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Version ID</th>
+        <th>Message</th>
+        <th>Company Name</th>
+        <th>Feedback Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var report in Model)
+    {
+        <tr>
+            <td>@report.ProductName</td>
+            <td>@report.VersionID</td>
+            <td>@report.Message</td>
+            <td>@report.CompanyName</td>
+            <td>@report.FeedbackDate.ToString("yyyy-MM-dd")</td>
+        </tr>
+    }
+    </tbody>
+</table>

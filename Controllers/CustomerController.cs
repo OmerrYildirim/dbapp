@@ -12,30 +12,8 @@ namespace dbapp.Controllers {
     [Authorize(Roles = "Customer")]
     public class CustomerController(SqlHelper sqlHelper, JwtService jwtService) : Controller {
         [HttpGet]
-        public IActionResult CustomerDashboard(CustomerProductNames model) {
-            if (!ModelState.IsValid) return View(model);
-
-            var productNames = new List<string>();
-            try {
-                sqlHelper.OpenConnection();
-                var command = sqlHelper.CreateCommand("SELECT PName FROM PRODUCT_");
-                using (var reader = SqlHelper.ExecuteReader(command)) {
-                    while (reader.Read()) {
-                        productNames.Add(reader["PName"].ToString());
-                    }
-                }
-            } catch (Exception ex) {
-                Console.WriteLine($"Error: {ex.Message}");
-            } finally {
-                sqlHelper.CloseConnection();
-            }
-
-            // Eğer liste boşsa yine boş bir model gönderilir
-            var viewModel = new CustomerProductNames {
-                ProductNames = productNames
-            };
-
-            return View(viewModel);
+        public IActionResult CustomerDashboard() {
+            return View();
         }
 
 

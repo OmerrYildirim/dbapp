@@ -22,9 +22,12 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
         if (principal == null) return View();
         var role = principal.FindFirst(ClaimTypes.Role);
         if (role == null) return View();
-        return role.Value == "Employee"
-            ? RedirectToAction("Index", "Employee")
-            : RedirectToAction("CustomerDashboard", "Customer");
+        return role.Value switch {
+            "Employee" => RedirectToAction("EmployeeDashboard", "Employee"),
+            "Manager" => RedirectToAction("ManagerDashboard", "Manager"),
+            "Customer" => RedirectToAction("CustomerDashboard", "Customer"),
+            _ => RedirectToAction("ChoosePersonType", "Home")
+        };
     }
 
     // Login - POST
@@ -38,6 +41,7 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
             SELECT PersonID 
             FROM [dbo].[PERSON] 
             WHERE Email = @Email AND PASSWORD_ = @Password AND PERSONTYPE = @PersonType";
+                
 
                 using (var command = new SqlCommand(query, connection)) {
                     // Add parameters
@@ -62,11 +66,14 @@ public class HomeController(SqlHelper sqlHelper, JwtService jwtService) : Contro
                         SameSite = SameSiteMode.Strict,
                         Expires = DateTime.UtcNow.AddMinutes(120)
                     });
-
+                    
                     // Redirect to a secured page (e.g., Dashboard) upon successful login
-                    return model.UserType == "Employee"
-                        ? RedirectToAction("Index", "Employee")
-                        : RedirectToAction("CustomerDashboard", "Customer");
+                    return model.UserType switch {
+                        "Employee" => RedirectToAction("EmployeeDashboard", "Employee"),
+                        "Manager" => RedirectToAction("ManagerDashboard", "Manager"),
+                        "Customer" => RedirectToAction("CustomerDashboard", "Customer"),
+                        _ => RedirectToAction("ChoosePersonType", "Home")
+                    };
                 }
             }
         } catch {
