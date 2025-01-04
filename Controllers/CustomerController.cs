@@ -136,72 +136,61 @@ namespace dbapp.Controllers {
             }
         }
 
+        
+      // Bug Report View
+        public ActionResult BugReport()
+        {
+            return View();
+        }
+
+        // Feature Request View
+        public ActionResult FeatureRequest()
+        {
+            return View();
+        }
+
+        // Submit Bug Report
         [HttpPost]
-        public IActionResult BuyLicense(int productId, int licenseTerm) {
-            var token = Request.Cookies["JWT"];
-            if (token == null) {
-                ModelState.AddModelError(string.Empty, "Token not found.");
-                return RedirectToAction("GetProductInfo");
-            }
+        public ActionResult SubmitBugReport(BugReportModel model)
+        {
+            if (!ModelState.IsValid) return View("BugReport");
+            using (var command = sqlHelper.CreateCommand("EXEC pro_CREATE_BUG_REPORT @messagePar, @fdatePar, @productnamePar, @companynamePar, @versionIDPar"))
+            {
+                SqlHelper.AddParameter(command, "@messagePar", SqlDbType.NVarChar, model.Message);
+                SqlHelper.AddParameter(command, "@fdatePar", SqlDbType.Date, DateTime.Now);
+                SqlHelper.AddParameter(command, "@productnamePar", SqlDbType.NVarChar, model.ProductName);
+                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, model.CompanyName);
+                SqlHelper.AddParameter(command, "@versionIDPar", SqlDbType.Decimal, model.VersionID);
 
-            var principal = jwtService.ValidateToken(token);
-            if (principal == null) {
-                ModelState.AddModelError(string.Empty, "Invalid token.");
-                return RedirectToAction("GetProductInfo");
-            }
-
-            var customerIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
-            if (customerIdClaim == null) {
-                ModelState.AddModelError(string.Empty, "Customer ID not found.");
-                return RedirectToAction("GetProductInfo");
-            }
-
-            int customerId;
-            if (!int.TryParse(customerIdClaim.Value, out customerId)) {
-                ModelState.AddModelError(string.Empty, "Invalid customer ID.");
-                return RedirectToAction("GetProductInfo");
-            }
-
-            string getCompanyQuery = @"
-        SELECT c.CompanyID
-        FROM CUSTOMER cu
-        INNER JOIN COMPANY c ON cu.CompanyID = c.CompanyID
-        WHERE cu.CustomerID = @CustomerID";
-
-            int? companyId = null;
-
-            using (var command = sqlHelper.CreateCommand(getCompanyQuery)) {
-                SqlHelper.AddParameter(command, "@CustomerID", SqlDbType.Int, customerId);
-                sqlHelper.OpenConnection();
-                using (var reader = SqlHelper.ExecuteReader(command)) {
-                    if (reader.Read()) {
-                        companyId = reader.GetInt32(0);
-                    }
-                }
-
-                sqlHelper.CloseConnection();
-            }
-
-            if (!companyId.HasValue) {
-                ModelState.AddModelError(string.Empty, "Customer not associated with a company.");
-                return RedirectToAction("GetProductInfo");
-            }
-
-            // Insert the new license
-            string insertLicenseQuery = @"
-        INSERT INTO LICENCE (LicenceTerm, StartDate, ProductID, CompanyID)
-        VALUES (@LicenceTerm, GETDATE(), @ProductID, @CompanyID)";
-
-            using (var command = sqlHelper.CreateCommand(insertLicenseQuery)) {
-                SqlHelper.AddParameter(command, "@LicenceTerm", SqlDbType.Int, licenseTerm);
-                SqlHelper.AddParameter(command, "@ProductID", SqlDbType.Int, productId);
-                SqlHelper.AddParameter(command, "@CompanyID", SqlDbType.Int, companyId);
                 sqlHelper.OpenConnection();
                 SqlHelper.ExecuteNonQuery(command);
                 sqlHelper.CloseConnection();
             }
 
-            return RedirectToAction("GetProductInfo"); // Redirect back to the product info view
+            ViewBag.Message = "Bug report submitted successfully.";
+            return RedirectToAction("GetProductInfo", "Customer");
+        }
+
+        // Submit Feature Request
+        [HttpPost]
+        public ActionResult SubmitFeatureRequest(FeatureRequestModel model)
+        {
+            if (!ModelState.IsValid) return View("FeatureRequest");
+            using (var command = sqlHelper.CreateCommand("EXEC pro_CREATE_FEATURE_REQUEST @messagePar, @fdatePar, @productnamePar, @companynamePar, @ratingPar"))
+            {
+                SqlHelper.AddParameter(command, "@messagePar", SqlDbType.NVarChar, model.Message);
+                SqlHelper.AddParameter(command, "@fdatePar", SqlDbType.Date, DateTime.Now);
+                SqlHelper.AddParameter(command, "@productnamePar", SqlDbType.NVarChar, model.ProductName);
+                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, model.CompanyName);
+                SqlHelper.AddParameter(command, "@ratingPar", SqlDbType.Int, model.Rating);
+
+                sqlHelper.OpenConnection();
+                SqlHelper.ExecuteNonQuery(command);
+                sqlHelper.CloseConnection();
+            }
+
+            ViewBag.Message = "Feature request submitted successfully.";
+            return RedirectToAction("GetProductInfo", "Customer");
         }
     }
 }

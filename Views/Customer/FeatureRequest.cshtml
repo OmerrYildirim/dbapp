@@ -1,0 +1,31 @@
+﻿<!-- FeatureRequest.cshtml -->
+@model dbapp.Models.FeatureRequestModel
+
+<h2>Submit Feature Request</h2>
+
+@using (Html.BeginForm("SubmitFeatureRequest", "Customer", FormMethod.Post))
+{
+    <div>
+        <label for="Message">Message:</label>
+        @Html.TextAreaFor(model => model.Message, new { @class = "form-control" })
+    </div>
+    <div>
+        <label for="ProductName">Product Name:</label>
+        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+    </div>
+    <div>
+        <label for="CompanyName">Company Name:</label>
+        @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+    </div>
+    <div>
+        <label for="Rating">Rating:</label>
+        @Html.TextBoxFor(model => model.Rating, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    <div class="form-group text-center mt-3">
+        <a asp-controller="Customer" asp-action="GetProductInfo" class="text-black">Click for return previous
+            page!</a>
+
+    </div>
+}
