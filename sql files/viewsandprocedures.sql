@@ -135,7 +135,7 @@ BEGIN
                 select c.CompanyID
                 from Company c
                 where c.CompanyName = @companynamePar
-            ),'bug report'
+            ),'feature request'
         )
     insert into FEATUREREQUEST(FeedbackID,Rating) values
         (
