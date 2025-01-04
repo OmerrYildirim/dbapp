@@ -1,0 +1,4 @@
+-> create Licence UI VERSION.sql
+-> pro_ADD_PRODUCT_VERSION.sql
+-> product silme.sql
+-> view company licences.sql
