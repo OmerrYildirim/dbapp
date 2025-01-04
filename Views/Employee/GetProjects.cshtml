@@ -1,0 +1,39 @@
+﻿@model IEnumerable<dbapp.Models.EmployeeProjectsViewModel>
+
+@{
+    ViewData["Title"] = "My Projects";
+}
+
+<h1 class="mb-4">My Projects</h1>
+
+@if (!Model.Any())
+{
+    <p>You don't have any projects right now!</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Project Name</th>
+            <th>Project Description</th>
+            <th>Release Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var project in Model)
+        {
+            <tr>
+                <td>@project.Name</td>
+                <td>@project.Description</td>
+                <td>@project.ReleaseDate.ToString("dd.MM.yyyy")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="form-group text-center mt-3">
+        <a asp-controller="Employee" asp-action="EmployeeDashboard" class="text-black">Click for return previous
+            page!</a>
+
+    </div>
+}

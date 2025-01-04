@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3 col-lg-2 p-3 bg-dark text-white sidebar" style="height: 100vh; position: fixed;">
+            <div class="d-flex flex-column">
+                <a href="@Url.Action("GetProjects", "Employee")" class="btn btn-secondary mb-2">My Projects</a>
+                
+            </div>
+
+            <div class="mt-auto" style="margin-top: auto;">
+                <a href="@Url.Action("Logout", "Employee")" class="btn btn-danger w-100 mt-3">Logout</a>
+            </div>
+        </div>
+
+        <div class="col-md-9 offset-md-3 col-lg-10 offset-lg-2 p-4" style="margin-left: 250px;">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        overflow-y: auto;
+        background-color: #343a40;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    hr {
+        border-color: white;
+    }
+</style>

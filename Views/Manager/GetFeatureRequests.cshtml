@@ -19,13 +19,18 @@
     <tbody>
     @foreach (var request in Model)
     {
-    <tr>
-        <td>@request.ProductName</td>
-        <td>@request.Rating</td>
-        <td>@request.Message</td>
-        <td>@request.CompanyName</td>
-        <td>@request.FeedbackDate.ToString("yyyy-MM-dd")</td>
-    </tr>
+        <tr>
+            <td>@request.ProductName</td>
+            <td>@request.Rating</td>
+            <td>@request.Message</td>
+            <td>@request.CompanyName</td>
+            <td>@request.FeedbackDate.ToString("yyyy-MM-dd")</td>
+        </tr>
     }
     </tbody>
 </table>
+<div class="form-group text-center mt-3">
+    <a asp-controller="Manager" asp-action="ManagerDashboard" class="text-black">Click for return previous
+        page!</a>
+
+</div>
