@@ -1,0 +1,28 @@
+﻿@model dbapp.Models.CustomerInformationViewModel
+
+<div class="container mt-4">
+    <h2>Customer Information</h2>
+    <table class="table table-bordered">
+        <tr>
+            <th>Full Name</th>
+            <td>@Model.FullName</td>
+        </tr>
+        <tr>
+            <th>Company Name</th>
+            <td>@Model.CompanyName</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>Hire Date</th>
+            <td>@Model.HireDate.ToShortDateString()</td>
+        </tr>
+    </table>
+    <div class="form-group text-center mt-3">
+        <a asp-controller="Customer" asp-action="CustomerDashboard" class="text-black">Click for return previous
+            page!</a>
+
+    </div>
+</div>

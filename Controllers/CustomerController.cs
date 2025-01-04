@@ -6,6 +6,7 @@ using System.Data;
 using System.Security.Claims;
 using dbapp.Models;
 using dbapp.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dbapp.Controllers {
     [Authorize(Roles = "Customer")]
@@ -37,129 +38,225 @@ namespace dbapp.Controllers {
             return View(viewModel);
         }
 
+
+        // View Licenses
         [HttpGet]
-        public IActionResult GetProductInfo(string name) {
-            // Step 1: Retrieve JWT token from the cookies
+        public IActionResult GetLicense() {
             var token = Request.Cookies["JWT"];
-            if (token == null) {
-                // Handle the case where token is not found
-                ModelState.AddModelError(string.Empty, "Token not found.");
-            }
+            if (token == null) return View();
 
-            // Step 2: Validate the token and extract claims
             var principal = jwtService.ValidateToken(token);
-            if (principal == null) {
-                // Handle invalid token
-                ModelState.AddModelError(string.Empty, "Token not found.");
+            if (principal == null) return View();
+
+
+            var customerEmail = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(customerEmail)) {
+                Console.WriteLine("User.Identity.Name is null or empty");
+                return View(new List<LicenseViewModel>());
             }
 
-            // Step 3: Extract the CustomerID from the JWT claims (assuming it's stored in the claims)
-            var customerIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier); // Assuming customer ID is stored as the NameIdentifier
-            if (customerIdClaim == null) {
-                // Handle missing claim (if customer ID is not available)
-                ModelState.AddModelError(string.Empty, "Token not found.");
-            }
+            var licenses = new List<LicenseViewModel>();
 
-            int customerId;
-            if (!int.TryParse(customerIdClaim.Value, out customerId)) {
-                // Handle case where customer ID is not valid
-                ModelState.AddModelError(string.Empty, "Token not found.");
-            }
+            using (var command = sqlHelper.CreateCommand("EXEC pro_VIEW_CUSTOMER_COMPANY_LICENCES @CustomerEmail")) {
+                SqlHelper.AddParameter(command, "@CustomerEmail", SqlDbType.VarChar, customerEmail);
 
-            // Step 4: Fetch the CompanyID associated with the CustomerID
-            string getCompanyQuery = @"
-        SELECT c.CompanyID
-        FROM CUSTOMER cu
-        INNER JOIN COMPANY c ON cu.CompanyID = c.CompanyID
-        WHERE cu.CustomerID = @CustomerID";
-
-            int? companyId = null;
-
-            using (var command = sqlHelper.CreateCommand(getCompanyQuery)) {
-                // Add the CustomerID parameter
-                SqlHelper.AddParameter(command, "@CustomerID", SqlDbType.Int, customerId);
-
-                // Open connection and retrieve the company ID
                 sqlHelper.OpenConnection();
                 using (var reader = SqlHelper.ExecuteReader(command)) {
-                    if (reader.Read()) {
-                        companyId = reader.GetInt32(0);
+                    while (reader.Read()) {
+                        licenses.Add(new LicenseViewModel {
+                            ProductName = reader["PName"].ToString(),
+                            StartDate = Convert.ToDateTime(reader["Start Date"]),
+                            EndDate = Convert.ToDateTime(reader["End Date"]),
+                            TotalFee = Convert.ToDecimal(reader["Total Fee"])
+                        });
                     }
                 }
 
                 sqlHelper.CloseConnection();
             }
 
-            if (!companyId.HasValue) {
-                // Handle case where the user doesn't belong to any company
-                ModelState.AddModelError(string.Empty, "Token not found.");
-            }
-
-            // Step 5: Fetch product information for the user's company using the CompanyID from the License table
-            string query = @"
-        SELECT p.PName, p.PDescription, p.ReleaseDate, pv.VersionID, pv.PVDate, pv.PVDescription
-        FROM PRODUCT_ p
-        INNER JOIN LICENCE l ON p.ProductID = l.ProductID
-        LEFT JOIN PRODUCT_VERSION pv ON p.ProductID = pv.ProductID
-        WHERE l.CompanyID = @CompanyID
-        AND p.PName = @ProductName";
-
-            using (var command = sqlHelper.CreateCommand(query)) {
-                // Add parameters for product name and company ID
-                SqlHelper.AddParameter(command, "@ProductName", SqlDbType.NVarChar, name);
-                SqlHelper.AddParameter(command, "@CompanyID", SqlDbType.Int, companyId);
-
-                // Open connection and execute query
-                sqlHelper.OpenConnection();
-                using (var reader = SqlHelper.ExecuteReader(command)) {
-                    var productInfoList = new List<ProductInfoViewModel>();
-
-                    // Read the data and map it to a list of view models
-                    while (reader.Read()) {
-                        var productInfo = new ProductInfoViewModel {
-                            ProductName = reader.GetString(0),
-                            ProductDescription = reader.GetString(1),
-                            ReleaseDate = reader.GetDateTime(2),
-                            VersionID = reader.IsDBNull(3) ? null : (decimal?)reader.GetDecimal(3),
-                            VersionDate = reader.IsDBNull(4) ? null : (DateTime?)reader.GetDateTime(4),
-                            VersionDescription = reader.IsDBNull(5) ? null : reader.GetString(5)
-                        };
-                        productInfoList.Add(productInfo);
-                    }
-
-                    // Close connection
-                    sqlHelper.CloseConnection();
-
-                    // Return the view with the product info
-                    return View(productInfoList);
-                }
-            }
+            return View(licenses);
         }
 
-        
-      // Bug Report View
-        public ActionResult BugReport()
+
+        // Buy License View
+        [HttpGet]
+        public IActionResult BuyLicense()
         {
+            var products = new List<SelectListItem>();
+
+            using (var command = sqlHelper.CreateCommand("SELECT ProductID, PName FROM PRODUCT_"))
+            {
+                sqlHelper.OpenConnection();
+                using (var reader = SqlHelper.ExecuteReader(command))
+                {
+                    while (reader.Read())
+                    {
+                        products.Add(new SelectListItem
+                        {
+                            Value = reader["PName"].ToString(),
+                            Text = reader["PName"].ToString()
+                        });
+                    }
+                }
+                sqlHelper.CloseConnection();
+            }
+
+            ViewBag.Products = products;
+            return View();
+        }
+
+        // Submit Buy License Request
+        [HttpPost]
+        public IActionResult BuyLicense(BuyLicenseModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            var token = Request.Cookies["JWT"];
+            if (token == null) return View();
+
+            var principal = jwtService.ValidateToken(token);
+            if (principal == null) return View();
+
+
+            var customerEmail = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            string companyName = null;
+
+            // Kullanıcının şirket adını al
+            using (var command = sqlHelper.CreateCommand(
+                       "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
+                       "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
+            {
+                SqlHelper.AddParameter(command, "@CustomerEmail", SqlDbType.NVarChar, customerEmail);
+
+                sqlHelper.OpenConnection();
+                var result = SqlHelper.ExecuteScalar(command);
+                companyName = result?.ToString(); // CompanyName'i string olarak al
+                sqlHelper.CloseConnection();
+
+                if (string.IsNullOrEmpty(companyName))
+                {
+                    ModelState.AddModelError(string.Empty, "Could not retrieve company name. Please contact support.");
+                    return View(model);
+                }
+            }
+
+            // Lisans satın alma prosedürünü çalıştır
+            using (var command = sqlHelper.CreateCommand(
+                       "EXEC pro_CREATE_LICENCE_UI @LicenceTermPar, @ProductNamePar, @CompanyNamePar"))
+            {
+                SqlHelper.AddParameter(command, "@LicenceTermPar", SqlDbType.Int, model.LicenseTerm);
+                SqlHelper.AddParameter(command, "@ProductNamePar", SqlDbType.NVarChar, model.ProductName);
+                SqlHelper.AddParameter(command, "@CompanyNamePar", SqlDbType.NVarChar, companyName);
+
+                sqlHelper.OpenConnection();
+                SqlHelper.ExecuteNonQuery(command);
+                sqlHelper.CloseConnection();
+            }
+
+            ViewBag.Message = "License purchased successfully.";
+            return RedirectToAction("GetLicense");
+        }
+
+
+
+
+
+        // Bug Report View
+        [HttpGet]
+        public IActionResult BugReport() {
+            var products = new List<SelectListItem>();
+
+            using (var command = sqlHelper.CreateCommand("SELECT ProductID, PName FROM PRODUCT_"))
+            {
+                sqlHelper.OpenConnection();
+                using (var reader = SqlHelper.ExecuteReader(command))
+                {
+                    while (reader.Read())
+                    {
+                        products.Add(new SelectListItem
+                        {
+                            Value = reader["PName"].ToString(),
+                            Text = reader["PName"].ToString()
+                        });
+                    }
+                }
+                sqlHelper.CloseConnection();
+            }
+
+            ViewBag.Products = products;
             return View();
         }
 
         // Feature Request View
-        public ActionResult FeatureRequest()
-        {
+        [HttpGet]
+        public ActionResult FeatureRequest() {
+            var products = new List<SelectListItem>();
+
+            using (var command = sqlHelper.CreateCommand("SELECT ProductID, PName FROM PRODUCT_"))
+            {
+                sqlHelper.OpenConnection();
+                using (var reader = SqlHelper.ExecuteReader(command))
+                {
+                    while (reader.Read())
+                    {
+                        products.Add(new SelectListItem
+                        {
+                            Value = reader["PName"].ToString(),
+                            Text = reader["PName"].ToString()
+                        });
+                    }
+                }
+                sqlHelper.CloseConnection();
+            }
+
+            ViewBag.Products = products;
             return View();
         }
 
         // Submit Bug Report
         [HttpPost]
-        public ActionResult SubmitBugReport(BugReportModel model)
-        {
+        public IActionResult SubmitBugReport(BugReportModel model) {
             if (!ModelState.IsValid) return View("BugReport");
-            using (var command = sqlHelper.CreateCommand("EXEC pro_CREATE_BUG_REPORT @messagePar, @fdatePar, @productnamePar, @companynamePar, @versionIDPar"))
+            
+            if (!ModelState.IsValid) return View(model);
+            var token = Request.Cookies["JWT"];
+            if (token == null) return View();
+
+            var principal = jwtService.ValidateToken(token);
+            if (principal == null) return View();
+
+
+            var customerEmail = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            string companyName = null;
+
+            // Kullanıcının şirket adını al
+            using (var command = sqlHelper.CreateCommand(
+                       "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
+                       "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
             {
+                SqlHelper.AddParameter(command, "@CustomerEmail", SqlDbType.NVarChar, customerEmail);
+
+                sqlHelper.OpenConnection();
+                var result = SqlHelper.ExecuteScalar(command);
+                companyName = result?.ToString(); // CompanyName'i string olarak al
+                sqlHelper.CloseConnection();
+
+                if (string.IsNullOrEmpty(companyName))
+                {
+                    ModelState.AddModelError(string.Empty, "Could not retrieve company name. Please contact support.");
+                    return View(model);
+                }
+            }
+            using (var command =
+                   sqlHelper.CreateCommand(
+                       "EXEC pro_CREATE_BUG_REPORT @messagePar, @fdatePar, @productnamePar, @companynamePar, @versionIDPar")) {
                 SqlHelper.AddParameter(command, "@messagePar", SqlDbType.NVarChar, model.Message);
                 SqlHelper.AddParameter(command, "@fdatePar", SqlDbType.Date, DateTime.Now);
                 SqlHelper.AddParameter(command, "@productnamePar", SqlDbType.NVarChar, model.ProductName);
-                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, model.CompanyName);
+                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, companyName);
                 SqlHelper.AddParameter(command, "@versionIDPar", SqlDbType.Decimal, model.VersionID);
 
                 sqlHelper.OpenConnection();
@@ -168,20 +265,50 @@ namespace dbapp.Controllers {
             }
 
             ViewBag.Message = "Bug report submitted successfully.";
-            return RedirectToAction("GetProductInfo", "Customer");
+            return RedirectToAction("CustomerDashboard", "Customer");
         }
 
         // Submit Feature Request
         [HttpPost]
-        public ActionResult SubmitFeatureRequest(FeatureRequestModel model)
-        {
+        public IActionResult SubmitFeatureRequest(FeatureRequestModel model) {
             if (!ModelState.IsValid) return View("FeatureRequest");
-            using (var command = sqlHelper.CreateCommand("EXEC pro_CREATE_FEATURE_REQUEST @messagePar, @fdatePar, @productnamePar, @companynamePar, @ratingPar"))
+            if (!ModelState.IsValid) return View(model);
+            var token = Request.Cookies["JWT"];
+            if (token == null) return View();
+
+            var principal = jwtService.ValidateToken(token);
+            if (principal == null) return View();
+
+
+            var customerEmail = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            string companyName = null;
+
+            // Kullanıcının şirket adını al
+            using (var command = sqlHelper.CreateCommand(
+                       "SELECT c.CompanyName FROM Company c INNER JOIN CUSTOMER cus ON c.CompanyID = cus.CompanyID " +
+                       "INNER JOIN PERSON p ON cus.CustomerID = p.PersonID WHERE p.Email = @CustomerEmail"))
             {
+                SqlHelper.AddParameter(command, "@CustomerEmail", SqlDbType.NVarChar, customerEmail);
+
+                sqlHelper.OpenConnection();
+                var result = SqlHelper.ExecuteScalar(command);
+                companyName = result?.ToString(); // CompanyName'i string olarak al
+                sqlHelper.CloseConnection();
+
+                if (string.IsNullOrEmpty(companyName))
+                {
+                    ModelState.AddModelError(string.Empty, "Could not retrieve company name. Please contact support.");
+                    return View(model);
+                }
+            }
+            using (var command =
+                   sqlHelper.CreateCommand(
+                       "EXEC pro_CREATE_FEATURE_REQUEST @messagePar, @fdatePar, @productnamePar, @companynamePar, @ratingPar")) {
                 SqlHelper.AddParameter(command, "@messagePar", SqlDbType.NVarChar, model.Message);
                 SqlHelper.AddParameter(command, "@fdatePar", SqlDbType.Date, DateTime.Now);
                 SqlHelper.AddParameter(command, "@productnamePar", SqlDbType.NVarChar, model.ProductName);
-                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, model.CompanyName);
+                SqlHelper.AddParameter(command, "@companynamePar", SqlDbType.NVarChar, companyName);
                 SqlHelper.AddParameter(command, "@ratingPar", SqlDbType.Int, model.Rating);
 
                 sqlHelper.OpenConnection();
@@ -190,7 +317,45 @@ namespace dbapp.Controllers {
             }
 
             ViewBag.Message = "Feature request submitted successfully.";
-            return RedirectToAction("GetProductInfo", "Customer");
+            return RedirectToAction("CustomerDashboard", "Customer");
+        }
+
+        [HttpGet]
+        public IActionResult CustomerInformation() {
+            var token = Request.Cookies["JWT"];
+            if (token == null) return View();
+
+            var principal = jwtService.ValidateToken(token);
+            if (principal == null) return View();
+            
+            var customerEmail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            
+            var customerInfo = new CustomerInformationViewModel();
+
+            using (var command = sqlHelper.CreateCommand("EXEC pro_VIEW_CUSTOMER_INFORMATION @CustomerEmail")) {
+                SqlHelper.AddParameter(command, "@CustomerEmail", SqlDbType.VarChar, customerEmail);
+
+                sqlHelper.OpenConnection();
+                using (var reader = SqlHelper.ExecuteReader(command)) {
+                    if (reader.Read()) {
+                        customerInfo.FullName = reader["FullName"].ToString();
+                        customerInfo.CompanyName = reader["CompanyName"].ToString();
+                        customerInfo.Email = reader["Email"].ToString();
+                        customerInfo.HireDate = Convert.ToDateTime(reader["HireDate"]);
+                    }
+                }
+
+                sqlHelper.CloseConnection();
+            }
+
+            return View(customerInfo);
+        }
+        public IActionResult Logout()
+        {
+            
+            Response.Cookies.Delete("JWT");
+            
+            return RedirectToAction("ChoosePersonType", "Home");
         }
     }
 }

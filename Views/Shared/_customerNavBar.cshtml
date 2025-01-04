@@ -11,52 +11,31 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
+
         <div class="col-md-3 col-lg-2 p-3 bg-dark text-white sidebar" style="height: 100vh; position: fixed;">
-            <h2 class="mb-4">Products</h2>
-            <ul class="list-unstyled">
-                <li class="mb-3">
-                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="IRONIC"
-                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
-                        IRONIC
-                    </a>
-                </li>
-                <li class="mb-3">
-                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="ISGPRO"
-                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
-                        ISGPRO
-                    </a>
-                </li>
-                <li class="mb-3">
-                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="IRONIC-OSGB"
-                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
-                        IRONIC-OSGB
-                    </a>
-                </li>
-                <li class="mb-3">
-                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="MOBILISG"
-                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
-                        MOBILISG
-                    </a>
-                </li>
-                <li class="mb-3">
-                    <a asp-controller="Customer" asp-action="GetProductInfo" asp-route-name="AYS"
-                       class="text-white text-decoration-none btn btn-dark-yellow w-100 product-button">
-                        AYS
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav">
-                
-                <li>@Html.ActionLink("Bug Report", "BugReport", "Customer")</li>
-                <li>@Html.ActionLink("Feature Request", "FeatureRequest", "Customer")</li>
-            </ul>
+
+            <div class="d-flex flex-column">
+                <a href="@Url.Action("GetLicense", "Customer")" class="btn btn-secondary mb-2">Get License</a>
+                <a href="@Url.Action("BuyLicense", "Customer")" class="btn btn-primary mb-2">Buy License</a>
+            </div>
+
+            <div class="mt-auto" style="margin-top: auto;">
+                <ul class="nav flex-column mt-4">
+                    <li class="nav-item">
+                        @Html.ActionLink("Bug Report", "BugReport", "Customer", null, new { @class = "nav-link text-white" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Feature Request", "FeatureRequest", "Customer", null, new { @class = "nav-link text-white" })
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="@Url.Action("CustomerInformation", "Customer")">User Information</a>
+                    </li>
+                </ul>
+
+                <a href="@Url.Action("Logout", "Customer")" class="btn btn-danger w-100 mt-3">Logout</a>
+            </div>
         </div>
 
-        
-        
-
-        <!-- Main content -->
         <div class="col-md-9 offset-md-3 col-lg-10 offset-lg-2 p-4" style="margin-left: 250px;">
             <main role="main">
                 @RenderBody()
@@ -74,15 +53,13 @@
 
 
 <style>
-
     html, body {
         margin: 0;
         padding: 0;
         height: 100%;
         overflow: hidden;
-        background-color: black; /* Arka plan rengini siyah yap */
+        background-color: black;
     }
-
 
     .sidebar {
         position: fixed;
@@ -93,6 +70,8 @@
         overflow-y: auto;
         background-color: #343a40;
         padding-top: 20px;
+        display: flex;
+        flex-direction: column;
     }
 
     hr {

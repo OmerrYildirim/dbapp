@@ -1,0 +1,29 @@
+﻿@model List<dbapp.Models.LicenseViewModel>
+
+<h2>Your Licenses</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Total Fee</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var license in Model)
+    {
+        <tr>
+            <td>@license.ProductName</td>
+            <td>@license.StartDate.ToShortDateString()</td>
+            <td>@license.EndDate.ToShortDateString()</td>
+            <td>@license.TotalFee.ToString("C")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="form-group text-center mt-3">
+    <a asp-controller="Customer" asp-action="CustomerDashboard" class="text-black">Click for return previous
+        page!</a>
+
+</div>

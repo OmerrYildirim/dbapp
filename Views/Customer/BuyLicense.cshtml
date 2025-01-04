@@ -1,14 +1,10 @@
-﻿<!-- BugReport.cshtml -->
-@model dbapp.Models.BugReportModel
+﻿<!-- BuyLicense.cshtml -->
+@model dbapp.Models.BuyLicenseModel
 
-<h2>Submit Bug Report</h2>
+<h2>Buy License</h2>
 
-@using (Html.BeginForm("SubmitBugReport", "Customer", FormMethod.Post))
+@using (Html.BeginForm("BuyLicense", "Customer", FormMethod.Post))
 {
-    <div>
-        <label for="Message">Message:</label>
-        @Html.TextAreaFor(model => model.Message, new { @class = "form-control" })
-    </div>
     <div>
         <label for="ProductName">Product Name:</label>
         @Html.DropDownListFor(model => model.ProductName, 
@@ -16,10 +12,12 @@
             "Select a Product", 
             new { @class = "form-control" })
     </div>
+
     <div>
-        <label for="VersionID">Version ID:</label>
-        @Html.TextBoxFor(model => model.VersionID, new { @class = "form-control" })
+        <label for="LicenseTerm">License Term (in days):</label>
+        @Html.TextBoxFor(model => model.LicenseTerm, new { @class = "form-control" })
     </div>
+  
     <button type="submit" class="btn btn-primary">Submit</button>
     <div class="form-group text-center mt-3">
         <a asp-controller="Customer" asp-action="CustomerDashboard" class="text-black">Click for return previous

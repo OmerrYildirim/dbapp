@@ -11,21 +11,90 @@
     </div>
     <div>
         <label for="ProductName">Product Name:</label>
-        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
-    </div>
-    <div>
-        <label for="CompanyName">Company Name:</label>
-        @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.ProductName, 
+            new SelectList(ViewBag.Products, "Value", "Text"), 
+            "Select a Product", 
+            new { @class = "form-control" })
     </div>
     <div>
         <label for="Rating">Rating:</label>
-        @Html.TextBoxFor(model => model.Rating, new { @class = "form-control" })
+        <div id="rating-container" class="star-rating">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="star" data-value="@i">&#9733;</span>
+            }
+        </div>
+        @Html.HiddenFor(model => model.Rating, new { id = "Rating" })
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 
     <div class="form-group text-center mt-3">
-        <a asp-controller="Customer" asp-action="GetProductInfo" class="text-black">Click for return previous
+        <a asp-controller="Customer" asp-action="CustomerDashboard" class="text-black">Click for return previous
             page!</a>
 
     </div>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("Rating");
+
+        stars.forEach((star) => {
+            star.addEventListener("mouseenter", function () {
+                resetStars();
+                highlightStars(this.dataset.value);
+            });
+
+            star.addEventListener("mouseleave", function () {
+                resetStars();
+                highlightStars(ratingInput.value);
+            });
+
+            star.addEventListener("click", function () {
+                ratingInput.value = this.dataset.value;
+                highlightStars(this.dataset.value);
+            });
+        });
+
+        function resetStars() {
+            stars.forEach((star) => {
+                star.classList.remove("selected");
+            });
+        }
+
+        function highlightStars(rating) {
+            stars.forEach((star) => {
+                if (parseInt(star.dataset.value) <= parseInt(rating)) {
+                    star.classList.add("selected");
+                }
+            });
+        }
+    });
+</script>
+
+
+
+<style>
+    .star-rating {
+        display: inline-flex;
+        
+        font-size: 2rem;
+    }
+
+    .star {
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .star:hover,
+    .star:hover ~ .star {
+        color: #ffc107;
+    }
+
+    .star.selected {
+        color: #ffc107;
+    }
+</style>
+
