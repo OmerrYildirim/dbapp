@@ -66,6 +66,24 @@ END
 GO
 
 
+CREATE PROCEDURE pro_VIEW_AVG_RATING_PRODUCT
+	@productName varchar(100)
+AS
+BEGIN
+	SELECT avg(fr.Rating)
+	FROM FEEDBACK fb inner join FEATUREREQUEST fr on fb.FeedbackID = fr.FeedbackID
+		inner join Company cmp on cmp.CompanyID = fb.CompanyID
+		inner join PRODUCT_ pro on pro.ProductID = fb.ProductID
+	where fb.ProductID in (
+		select p.ProductID
+		from PRODUCT_ p 
+		where p.PName = @productName
+	)
+	group by pro.PName
+	order by pro.PName
+END
+GO
+
 
 
 -- usage 
@@ -73,3 +91,4 @@ GO
 -- exec pro_VIEW_BUG_REPORTS_MANAGER 'kadirdemir@hotmail.com'
 -- exec pro_VIEW_FEATURE_REQUESTS_MANAGER 'selimaksoy@gmail.com'
 -- exec pro_VIEW_FEATURE_REQUESTS_MANAGER 'leylacelik@gmail.com'
+-- exec pro_VIEW_FEATURE_REQUESTS_MANAGER 'ayselyilmaz@gmail.com'
