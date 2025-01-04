@@ -1,0 +1,4 @@
+-> Set manager trigger.sql
+-> trg_CHECK_EMPLOYEE_PRODUCT_LIMIT.sql
+-> triggerInsertProductVersion.sql
+-> viewsandprocedures.sql

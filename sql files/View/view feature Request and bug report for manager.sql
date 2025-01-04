@@ -4,6 +4,7 @@ create procedure pro_VIEW_BUG_REPORTS_MANAGER
 	@managerMail varchar(100)
 AS
 BEGIN
+	
 	SELECT pro.PName, br.VersionID, fb.Message_, cmp.CompanyName, fb.FeedbackDate
 	FROM FEEDBACK fb inner join BUGREPORT br on fb.FeedbackID = br.FeedbackID
 		inner join Company cmp on cmp.CompanyID = fb.CompanyID
@@ -13,8 +14,8 @@ BEGIN
 		from EMPLOYEE emp inner join PERSON per on emp.EmployeeID = per.PersonID
 			inner join EMPLOYEE_PRODUCT ep on ep.EmployeeID = emp.EmployeeID
 			inner join PRODUCT_ p on p.ProductID = ep.ProductID
-		where per.Email = @managerMail
-	)
+		where per.Email = @managerMail)
+	
 	order by pro.PName
 END
 GO
@@ -39,6 +40,7 @@ BEGIN
 		where per.Email = @managerMail
 	)
 	order by pro.PName
+	
 END
 GO
 
@@ -62,6 +64,7 @@ BEGIN
 	)
 	group by pro.PName
 	order by pro.PName
+	
 END
 GO
 
@@ -81,6 +84,7 @@ BEGIN
 	)
 	group by pro.PName
 	order by pro.PName
+	
 END
 GO
 
