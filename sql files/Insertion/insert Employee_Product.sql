@@ -1,25 +1,26 @@
-﻿--create Procedure pro_INSERT_EMPLOYEE_PRODUCT
---	@employeeName nvarchar(50),
---	@productName nvarchar(50)
---AS
---BEGIN
---	insert EMPLOYEE_PRODUCT values
---	( 
---		(
---			select p.PersonID
---			from PERSON p
---			where p.FullName = @employeeName
---		)
---	,
---		(
---			select p.ProductID
---			from PRODUCT_ p
---			where p.PName = @productName
---		)
---	)
---	
---END
+create Procedure pro_INSERT_EMPLOYEE_PRODUCT
+	@employeeName nvarchar(50),
+	@productName nvarchar(50)
+AS
+BEGIN
+	insert EMPLOYEE_PRODUCT values
+	( 
+		(
+			select p.PersonID
+			from PERSON p
+			where p.FullName = @employeeName
+		)
+	,
+		(
+			select p.ProductID
+			from PRODUCT_ p
+			where p.PName = @productName
+		)
+	)
+	
+END
 
+-- ayri ayri calistir
 
 exec dbo.pro_INSERT_EMPLOYEE_PRODUCT 'Kadir Demir','AYS'
 exec dbo.pro_INSERT_EMPLOYEE_PRODUCT 'Selim Aksoy','IRONIC'
